@@ -26,6 +26,6 @@ jobs:
         with:
           platforms: linux/arm64
           push: true
-          tags: renatofh/gitopsfc
+          tags: renatofh/gitopsfc:${{ github.sha }}
 
       # voltar as actions antigas para cá!
