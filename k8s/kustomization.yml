@@ -8,4 +8,4 @@ resources:
 images:
 - name: goserver
   newName: renatofh/gitopsfc
-  newTag: 1436cb5ac2a29abf3a039fbcbd02767eb6043a8c
+  newTag: 1ff8fe77542da0307826eda04629b3f94ff1d57c
