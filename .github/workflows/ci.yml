@@ -32,7 +32,7 @@ jobs:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}\
       run: |
         cd k8s
-        kustomize edit set image goserver=$DOCKER_USERNAME/gitopsfc:$GITHUB_SHA
+        kustomize edit set image goserver=renatofh/gitopsfc:$GITHUB_SHA
     
     # Commitar a versão atualizada do arquivo kustomization.yml
     - name: Commit kustomization.yml
