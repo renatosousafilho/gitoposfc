@@ -42,7 +42,7 @@ jobs:
         git commit -am "Bump docker version"
 
     # Fazer push da versão atualizada
-    - name: Push update version of kustomization.yml
+    - name: Push
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
