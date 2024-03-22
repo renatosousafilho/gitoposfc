@@ -1,68 +1,29 @@
-name: CDGitOps
+name: ci
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - 'main'
 
 jobs:
-  build:
-    name: Build
+  docker:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Build and push
-      uses: docker/build-push-action@v5
-      with:
-        push: true
-        # repository: ${{ secrets.DOCKER_USERNAME }}/gitopsfc
-        tags: ${{ secrets.DOCKER_USERNAME }}/gitopsfc:${{github.sha}},latest
-    
-    # - name: Build and push image to Dockerhub
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     username: ${{ secrets.DOCKER_USERNAME }}
-    #     password: ${{ secrets.DOCKER_PASSWORD }}
-    #     repository: ${{ secrets.DOCKER_USERNAME }}/gitopsfc
-    #     tags: ${{github.sha}},latest
-
-    # Instalar o Kustomize
-    - name: Setup Kustomize
-      uses: imranismail/setup-kustomize@v1
-      with:
-        kustomize-version: "3.6.1"
-    
-    - name: Update kubernetes resources
-      env: 
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}\
-      run: |
-        cd k8s
-        kustomize edit set image goserver=renatofh/gitopsfc:$GITHUB_SHA
-    
-    # Commitar a versão atualizada do arquivo kustomization.yml
-    - name: Commit kustomization.yml
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -am "Bump docker version"
-
-    # Fazer push da versão atualizada
-    - name: Push
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        repository: renatosousafilho/gitopsfc
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: renatofh/gitopsfc
